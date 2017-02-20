@@ -86,6 +86,15 @@
                                     </segmentedControl>
                                 </subviews>
                             </stackView>
+                            <segmentedControl hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8nO-U5-eCc">
+                                <rect key="frame" x="16" y="30" width="37" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="+"/>
+                                    <segment title="-"/>
+                                </segments>
+                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -97,6 +106,7 @@
                         <outlet property="decimalSegment" destination="bDO-6s-sbs" id="wfl-lQ-cnd"/>
                         <outlet property="formulaPicker" destination="6dk-UI-FRg" id="aQy-Tj-S2l"/>
                         <outlet property="fromUnitsLabel" destination="P2F-gE-IQX" id="XEh-u3-Dqt"/>
+                        <outlet property="posNeg" destination="8nO-U5-eCc" id="7R3-qg-Du9"/>
                         <outlet property="resultsLabel" destination="bEk-dn-SGk" id="Q5p-MG-XpU"/>
                         <outlet property="userInput" destination="DCV-et-gEj" id="QPS-ap-CiJ"/>
                     </connections>
