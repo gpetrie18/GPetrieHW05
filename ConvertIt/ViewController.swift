@@ -21,6 +21,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     
     @IBOutlet weak var formulaPicker: UIPickerView!
     
+    @IBOutlet weak var decimalSegment: UISegmentedControl!
     var formulasArray = ["miles to kilometers",
                          "kilometers to miles",
                          "feet to meters",
@@ -29,7 +30,6 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
                          "meters to yards"]
     
     var toUnits = ""
-    
     var fromUnits = ""
     var conversionString = ""
 
@@ -42,6 +42,8 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         formulaPicker.dataSource = self
         formulaPicker.delegate = self
+        
+        conversionString = formulasArray[0]
         
         
     }
@@ -61,6 +63,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         var inputValue = 0.0
         var outputValue = 0.0
+           var outputString = ""
         
         if let inputValue = Double(userInput.text!) {
             switch conversionString {
@@ -83,7 +86,15 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         }else{
             showAlert()
             
-            resultsLabel.text = "\(userInput.text!) \(fromUnits) = \(outputValue) \(toUnits)"
+            if decimalSegment.selectedSegmentIndex < 3{
+                           outputString = String(format: "%." + String(decimalSegment.selectedSegmentIndex+1) + "f", outputValue)
+            }else{
+                           outputString = String(outputValue)
+            }
+ 
+     
+            
+            resultsLabel.text = "\(userInput.text!) \(fromUnits) = \(outputString) \(toUnits)"
         }
         
         
@@ -119,21 +130,14 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     //mark:- @IBActions
     
     @IBAction func convertButtonPressed(_ sender: UIButton) {
-        
-        
-        if let miles = Double(userInput.text!) {
-            let km = miles * 1.6
-            resultsLabel.text = "\(miles) miles = \(km) = kilometers"
-        } else {
-            resultsLabel.text = ""
-            
-            let alertController = UIAlertController(title: "Entry Error", message: "Please only enter numeric values, no commas, spaces, symbols, or non-numeric characters", preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(defaultAction)
-            present(alertController, animated: true, completion: nil)
-        }
+
+        calculateConversion()
         
         }
     
 }
+    @IBAction func decimalSelected(_ sender: UISegmentedControl) {
+        calculateConversion()
+    }
+    
 }
