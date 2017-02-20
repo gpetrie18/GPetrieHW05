@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate{
     
     @IBOutlet weak var userInput:
     UITextField!
@@ -30,6 +30,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     var toUnits = ""
     
+    var fromUnits = ""
+    var conversionString = ""
+
+    
     
     
     override func viewDidLoad() {
@@ -45,7 +49,44 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        
+        let alertController = UIAlertController(title: "Entry Error", message: "Please only enter numeric values, no commas, spaces, symbols, or non-numeric characters", preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(defaultAction)
+        present(alertController, animated: true, completion: nil)
+    
     }
+
+    func calculateConversion() {
+        
+        var inputValue = 0.0
+        var outputValue = 0.0
+        
+        if let inputValue = Double(userInput.text!) {
+            switch conversionString {
+            case "miles to kilometers" :
+                outputValue = inputValue / 0.62137
+            case "kilometers to miles" :
+                outputValue = inputValue * 0.62137
+            case "feet to meters" :
+                outputValue = inputValue / 3.2808
+            case "yards to meters" :
+                outputValue = inputValue / 1.0936
+            case "meters to feet" :
+                outputValue = inputValue * 3.2808
+            case "meters to yards" :
+                outputValue = inputValue * 1.0936
+            default:
+                showAlert()
+            }
+            
+        }else{
+            showAlert()
+            
+            resultsLabel.text = "\(userInput.text!) \(fromUnits) = \(outputValue) \(toUnits)"
+        }
+        
+        
     
     //mark:- Delegates and DataSources
     
@@ -64,11 +105,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         
-        
-        
+        conversionString = formulasArray[row]
         let unitsArray = formulasArray[row].components(separatedBy: " to ")
-        fromUnitsLabel.text = unitsArray[0]
+        
+        fromUnits = unitsArray[0]
         toUnits = unitsArray[1]
+        fromUnitsLabel.text = fromUnits
         resultsLabel.text = toUnits
     }
     
@@ -78,16 +120,20 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBAction func convertButtonPressed(_ sender: UIButton) {
         
-        let inputString = userIntput.text!
         
-        if let miles = Double(inputString) {
+        if let miles = Double(userInput.text!) {
             let km = miles * 1.6
-            resultsLabel.text = "\(inputString) miles = \(km) = kilometers"
+            resultsLabel.text = "\(miles) miles = \(km) = kilometers"
         } else {
-            showAlert()
-            // print("Error: \(inputString) is not a valid number. Please only enter numeric values, no commas, spaces, or symbols.")
+            resultsLabel.text = ""
+            
+            let alertController = UIAlertController(title: "Entry Error", message: "Please only enter numeric values, no commas, spaces, symbols, or non-numeric characters", preferredStyle: .alert)
+            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(defaultAction)
+            present(alertController, animated: true, completion: nil)
         }
         
         }
     
+}
 }
