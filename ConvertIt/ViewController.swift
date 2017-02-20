@@ -28,6 +28,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                          "meters to feet",
                          "meters to yards"]
     
+    var toUnits = ""
+    
     
     
     override func viewDidLoad() {
@@ -60,7 +62,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        fromUnitsLabel.text = formulasArray[row]
+        
+        
+        
+        
+        let unitsArray = formulasArray[row].components(separatedBy: " to ")
+        fromUnitsLabel.text = unitsArray[0]
+        toUnits = unitsArray[1]
+        resultsLabel.text = toUnits
     }
     
     
@@ -69,26 +78,16 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBAction func convertButtonPressed(_ sender: UIButton) {
         
-        if let cups = Double(userInput.text!){
-            let oz = cups * 8
-            let tbsp = cups * 16
-            let quarts = cups * 0.25
-            let pints = cups * 0.5
-            
-            resultsLabel.text = "\(cups) cups = \(oz) ounces, \(tbsp) tablespoons, \(quarts) quarts, or \(pints) pints"
-            
-        }else{
-            resultsLabel.text = ""
-            
-            let titleString = "error"
-            let messageString = "\(userInput.text!) is not a valid number"
-            let alertController = UIAlertController(title: titleString, message: messageString, preferredStyle: .alert)
-            let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(defaultAction)
-            present(alertController, animated: true, completion: nil)
-            
+        let inputString = userIntput.text!
+        
+        if let miles = Double(inputString) {
+            let km = miles * 1.6
+            resultsLabel.text = "\(inputString) miles = \(km) = kilometers"
+        } else {
+            showAlert()
+            // print("Error: \(inputString) is not a valid number. Please only enter numeric values, no commas, spaces, or symbols.")
         }
         
-    }
+        }
     
 }
